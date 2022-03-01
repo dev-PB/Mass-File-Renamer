@@ -21,8 +21,17 @@ def get_naming_convention():
 path = get_path()
 files = sorted(os.listdir(path))
 new_name_root = get_naming_convention()
+ignore = []
 
 for i, file in enumerate(files, 1):
     type = os.path.splitext(file)[1]
     new_name = new_name_root + str(i) + type
-    os.rename(path + "\\" + file, path + "\\" + new_name)
+
+    while new_name in files:
+        i += 1
+        ignore.append(new_name)
+        new_name = new_name_root + str(i) + type
+
+    if file not in ignore:
+        os.rename(path + "\\" + file, path + "\\" + new_name)
+    
